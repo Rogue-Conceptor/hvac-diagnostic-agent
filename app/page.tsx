@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center px-4">
@@ -8,12 +10,13 @@ export default function Home() {
         <p className="text-base mb-8" style={{ color: "#8b9bb4" }}>
           Field diagnostic tool for HVAC technicians
         </p>
-        <button
-          className="w-full sm:w-auto px-8 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90 active:opacity-80"
+        <Link
+          href="/diagnostic"
+          className="inline-block w-full sm:w-auto px-8 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90 active:opacity-80"
           style={{ backgroundColor: "#5d9cf5" }}
         >
           Start Diagnostic
-        </button>
+        </Link>
       </div>
     </main>
   );
