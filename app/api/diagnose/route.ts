@@ -96,7 +96,8 @@ export async function POST(req: NextRequest) {
     `Diagnose this HVAC issue based on the following technician inputs:\n\n` +
     formattedAnswers +
     `\n\nReturn ONLY valid JSON matching this exact structure (no markdown, no commentary):\n` +
-    `{"headline":"...","severity":"low|medium|high|critical","system_area":"...","what_was_detected":"...","likely_causes":["..."],"based_on_your_answers":"...","safety_flags":[],"confidence":"low|medium|high"}`;
+    `{"headline":"...","severity":"low|medium|high|critical","system_area":"...","what_was_detected":"...","likely_causes":["...","..."],"based_on_your_answers":"...","safety_flags":[],"confidence":"low|medium|high"}\n\n` +
+    `Return exactly 2 likely_causes, ranked by probability. No more than 2.`;
 
   let anthropicResponse: Response;
   try {

@@ -1,5 +1,5 @@
 {
-  "version": "2.1",
+  "version": "2.2",
   "app": "EasyHVAC Diagnostic Agent",
   "description": "Trade-realistic intake flow. Branches follow actual field diagnostic sequences from Carrier, Trane, Lennox, Goodman, and Rheem troubleshooting manuals, HVAC School curriculum, and ACHR News trade publications. Questions assume the tech is on-site with basic tools (multimeter, manifold gauges, thermometer).",
 
@@ -16,11 +16,7 @@
         { "value": "wont_start", "label": "System won't come on", "subtitle": "Dead — nothing happens" },
         { "value": "short_cycling", "label": "Short cycling", "subtitle": "Starts and stops repeatedly" },
         { "value": "unusual_noise", "label": "Unusual noise", "subtitle": "New sound the system didn't make before" },
-        { "value": "water_leak", "label": "Water leak", "subtitle": "Water where it shouldn't be" },
-        { "value": "poor_airflow", "label": "Weak or no airflow", "subtitle": "Air barely coming out of vents" },
-        { "value": "ice_buildup", "label": "Ice or frost on unit", "subtitle": "Coil, lines, or outdoor unit icing up" },
-        { "value": "odor", "label": "Unusual smell", "subtitle": "Burning, musty, rotten egg, chemical" },
-        { "value": "high_bills", "label": "High energy bills", "subtitle": "Usage spiked, system seems to run nonstop" }
+        { "value": "poor_airflow", "label": "Weak or no airflow", "subtitle": "Air barely coming out of vents" }
       ]
     },
     {
@@ -34,9 +30,6 @@
         { "value": "gas_furnace_ac", "label": "Gas furnace + AC", "subtitle": "Furnace for heat, condenser for cool" },
         { "value": "package_unit", "label": "Package unit", "subtitle": "All-in-one rooftop or ground mount" },
         { "value": "mini_split", "label": "Mini-split / ductless", "subtitle": "Wall-mounted indoor heads" },
-        { "value": "dual_fuel", "label": "Dual fuel", "subtitle": "Heat pump + gas furnace backup" },
-        { "value": "boiler_hydronic", "label": "Boiler / hydronic", "subtitle": "Hot water or steam radiators" },
-        { "value": "ptac", "label": "PTAC / window unit", "subtitle": "Through-wall or window-mounted" },
         { "value": "not_sure", "label": "Haven't identified yet" }
       ],
       "sub_field": {
@@ -108,12 +101,9 @@
         "min_selections": 1,
         "options": [
           { "value": "dirty_clogged_filter", "label": "Dirty or clogged air filter" },
-          { "value": "ice_suction_line", "label": "Ice or frost on suction line" },
-          { "value": "ice_evap_coil", "label": "Ice on evaporator coil" },
+          { "value": "ice_on_refrigerant_circuit", "label": "Ice on suction line or evaporator coil" },
           { "value": "dirty_condenser", "label": "Condenser coil is dirty / blocked with debris" },
-          { "value": "capacitor_swollen", "label": "Run capacitor looks swollen or leaking" },
-          { "value": "contactor_pitted", "label": "Contactor is pitted or burnt" },
-          { "value": "fan_blade_damaged", "label": "Condenser fan blade damaged or wobbly" },
+          { "value": "capacitor_or_contactor", "label": "Capacitor swollen or contactor pitted/burnt" },
           { "value": "disconnect_issue", "label": "Fuse blown at disconnect box" },
           { "value": "nothing_visible", "label": "Nothing visually obvious" }
         ]
@@ -128,12 +118,8 @@
           { "value": "low_suction", "label": "Suction pressure is low" },
           { "value": "high_suction", "label": "Suction pressure is high" },
           { "value": "high_head", "label": "Head pressure is high" },
-          { "value": "low_head", "label": "Head pressure is low" },
           { "value": "high_superheat", "label": "Superheat is high (>15°F)" },
           { "value": "low_superheat", "label": "Superheat is low (<5°F)" },
-          { "value": "high_subcool", "label": "Subcooling is high (>15°F)" },
-          { "value": "low_subcool", "label": "Subcooling is low (<5°F)" },
-          { "value": "low_delta_t", "label": "Supply/return delta T below 14°F" },
           { "value": "no_readings", "label": "Haven't taken readings yet" }
         ]
       }
@@ -164,8 +150,7 @@
           { "value": "nothing", "label": "Nothing at all — completely dead" },
           { "value": "blower_no_heat", "label": "Blower runs but air isn't warm" },
           { "value": "inducer_runs_no_ignition", "label": "Inducer kicks on but burners never light" },
-          { "value": "lights_then_goes_out", "label": "Burners light then flame goes out within seconds" },
-          { "value": "lights_runs_shuts_off", "label": "Runs for a few minutes then shuts down" },
+          { "value": "lights_then_shuts_off", "label": "Burners light then shut off (seconds to minutes)" },
           { "value": "hp_blows_cold", "label": "Heat pump running but blowing cold air" },
           { "value": "runs_but_not_warm_enough", "label": "Heating but not reaching setpoint" }
         ]
@@ -179,16 +164,9 @@
         "options": [
           { "value": "led_flashing", "label": "Control board LED flashing an error code" },
           { "value": "gas_smell", "label": "Smell of gas near the furnace" },
-          { "value": "igniter_not_glowing", "label": "Hot surface igniter not glowing" },
-          { "value": "igniter_glows_no_gas", "label": "Igniter glows but gas valve doesn't open" },
+          { "value": "igniter_not_working", "label": "Igniter not glowing or gas valve not opening" },
           { "value": "flame_sensor_dirty", "label": "Flame sensor rod looks dirty or corroded" },
-          { "value": "inducer_not_running", "label": "Draft inducer motor not running" },
-          { "value": "pressure_switch_stuck", "label": "Pressure switch won't close" },
-          { "value": "limit_switch_open", "label": "High limit switch tripped" },
-          { "value": "rollout_switch_tripped", "label": "Rollout switch tripped (manual reset)" },
-          { "value": "condensate_backed_up", "label": "Condensate drain backed up (90%+ furnace)" },
-          { "value": "outdoor_unit_iced", "label": "Heat pump outdoor unit is iced over" },
-          { "value": "reversing_valve_issue", "label": "Suspect reversing valve — running in wrong mode" },
+          { "value": "limit_or_rollout_tripped", "label": "High limit or rollout switch tripped" },
           { "value": "nothing_obvious", "label": "Nothing visually obvious" }
         ]
       },
@@ -228,15 +206,10 @@
         "min_selections": 1,
         "options": [
           { "value": "breaker_tripped", "label": "Breaker tripped at panel" },
-          { "value": "breaker_on", "label": "Breaker is on" },
-          { "value": "fuse_blown_disconnect", "label": "Fuse blown at outdoor disconnect" },
-          { "value": "disconnect_off", "label": "Disconnect switch is off" },
-          { "value": "no_24v", "label": "No 24V at thermostat terminals" },
-          { "value": "transformer_buzzing", "label": "Transformer buzzing or hot to touch" },
+          { "value": "fuse_or_disconnect_issue", "label": "Fuse blown or disconnect switch is off" },
+          { "value": "no_24v_or_transformer", "label": "No 24V at thermostat terminals or transformer issue" },
           { "value": "board_no_led", "label": "Control board has no LED / no power indicator" },
-          { "value": "board_has_power", "label": "Control board LED is lit" },
-          { "value": "float_switch_tripped", "label": "Float switch tripped — drain pan full" },
-          { "value": "blower_door_switch", "label": "Blower door not fully closed / safety switch" },
+          { "value": "float_or_safety_switch", "label": "Float switch tripped or blower door open" },
           { "value": "not_checked", "label": "Haven't checked power yet" }
         ]
       },
@@ -289,16 +262,12 @@
         "required": true,
         "min_selections": 1,
         "options": [
-          { "value": "high_head_pressure", "label": "High head pressure when it shuts off" },
+          { "value": "high_head_or_condenser_dirty", "label": "High head pressure or dirty condenser coil" },
           { "value": "compressor_hot", "label": "Compressor is hot to touch" },
-          { "value": "limit_tripping", "label": "High limit switch keeps tripping" },
-          { "value": "flame_lights_goes_out", "label": "Flame lights then goes out (furnace)" },
-          { "value": "pressure_switch_wont_close", "label": "Pressure switch cycling (furnace)" },
-          { "value": "oversized_suspicion", "label": "System may be oversized for the space" },
+          { "value": "furnace_safety_cutout", "label": "Furnace: limit tripping, flame going out, or pressure switch cycling" },
           { "value": "dirty_filter", "label": "Filter is dirty or restricted" },
-          { "value": "condenser_dirty", "label": "Condenser coil is dirty" },
           { "value": "refrigerant_low_suspect", "label": "Suspect low refrigerant charge" },
-          { "value": "nothing_obvious", "label": "Nothing obvious" }
+          { "value": "oversized_suspicion", "label": "System may be oversized for the space" }
         ]
       }
     ],
@@ -310,8 +279,7 @@
         "type": "single_select",
         "required": true,
         "options": [
-          { "value": "outdoor_compressor_area", "label": "Outdoor unit — compressor area" },
-          { "value": "outdoor_fan", "label": "Outdoor unit — fan / top" },
+          { "value": "outdoor_unit", "label": "Outdoor unit — compressor or fan area" },
           { "value": "indoor_blower", "label": "Indoor — blower / air handler" },
           { "value": "indoor_burner", "label": "Indoor — burner / heat exchanger area" },
           { "value": "ductwork", "label": "Ductwork — pops, bangs, whistling" },
@@ -330,9 +298,6 @@
           { "value": "squealing_screeching", "label": "Squealing or screeching", "subtitle": "Belt, bearing, or motor issue" },
           { "value": "clicking_repeated", "label": "Repeated clicking", "subtitle": "Relay, contactor, or ignition trying to start" },
           { "value": "buzzing_humming", "label": "Buzzing or humming", "subtitle": "Electrical — contactor, transformer, or compressor" },
-          { "value": "rattling_vibrating", "label": "Rattling or vibrating", "subtitle": "Loose panel, screw, or component" },
-          { "value": "gurgling_bubbling", "label": "Gurgling or bubbling", "subtitle": "Refrigerant — possible low charge or restriction" },
-          { "value": "hissing_rushing", "label": "Hissing or rushing air", "subtitle": "Refrigerant leak, duct leak, or expansion valve" },
           { "value": "screaming_high_pitch", "label": "High-pitched screaming", "subtitle": "SHUT IT DOWN — compressor high pressure" },
           { "value": "boom_on_ignition", "label": "Boom or pop on ignition", "subtitle": "Delayed ignition — gas buildup before light-off" }
         ]
@@ -348,51 +313,6 @@
           { "value": "shutdown", "label": "On shutdown" },
           { "value": "intermittent", "label": "Intermittent — comes and goes" },
           { "value": "under_load", "label": "Only when system is under heavy load" }
-        ]
-      }
-    ],
-
-    "water_leak": [
-      {
-        "step_id": "wl_location",
-        "title": "Where is the water?",
-        "type": "single_select",
-        "required": true,
-        "options": [
-          { "value": "base_air_handler", "label": "Base of air handler / furnace" },
-          { "value": "ceiling_vent", "label": "Dripping from ceiling or supply vent" },
-          { "value": "drain_pan_overflow", "label": "Drain pan overflowing" },
-          { "value": "outdoor_unit_base", "label": "Around base of outdoor unit" },
-          { "value": "pvc_drain_line", "label": "At the PVC condensate drain termination" },
-          { "value": "furnace_exhaust_area", "label": "Near furnace exhaust / flue area (90%+ furnace)" }
-        ]
-      },
-      {
-        "step_id": "wl_severity",
-        "title": "How much water?",
-        "type": "single_select",
-        "required": true,
-        "options": [
-          { "value": "small_puddle", "label": "Small puddle — just noticed it" },
-          { "value": "steady_drip", "label": "Steady drip" },
-          { "value": "significant_pooling", "label": "Significant pooling — potential property damage" },
-          { "value": "active_flow", "label": "Actively flowing" }
-        ]
-      },
-      {
-        "step_id": "wl_checks",
-        "title": "Select all that apply:",
-        "type": "multi_select",
-        "required": true,
-        "min_selections": 1,
-        "options": [
-          { "value": "drain_clogged", "label": "Primary condensate drain is clogged" },
-          { "value": "drain_not_trapped", "label": "Condensate drain has no trap or trap is dry" },
-          { "value": "secondary_drain_active", "label": "Secondary (emergency) drain line is flowing" },
-          { "value": "evap_coil_frozen_thawing", "label": "Evaporator coil was frozen and is now thawing" },
-          { "value": "drain_pan_cracked", "label": "Drain pan is cracked or rusted through" },
-          { "value": "90plus_exhaust_condensing", "label": "High-efficiency furnace — condensation from flue" },
-          { "value": "not_checked", "label": "Haven't checked drain system yet" }
         ]
       }
     ],
@@ -420,115 +340,10 @@
         "options": [
           { "value": "filter_clogged", "label": "Filter is clogged or heavily restricted" },
           { "value": "evap_coil_dirty", "label": "Evaporator coil is dirty / caked" },
-          { "value": "registers_closed", "label": "Supply registers closed or blocked by furniture" },
-          { "value": "dampers_closed", "label": "Zone dampers closed or stuck" },
-          { "value": "ductwork_disconnected", "label": "Ductwork disconnected or collapsed in attic/crawl" },
+          { "value": "ductwork_or_registers_blocked", "label": "Ductwork disconnected, collapsed, or registers closed/blocked" },
           { "value": "blower_wheel_dirty", "label": "Blower wheel caked with dust" },
-          { "value": "blower_motor_hot", "label": "Blower motor is hot to touch" },
-          { "value": "capacitor_weak", "label": "Blower capacitor may be weak" },
-          { "value": "ecm_fault", "label": "ECM / variable speed motor showing fault" },
+          { "value": "blower_motor_or_capacitor", "label": "Blower motor hot, capacitor weak, or ECM fault" },
           { "value": "not_checked", "label": "Haven't investigated yet" }
-        ]
-      }
-    ],
-
-    "ice_buildup": [
-      {
-        "step_id": "ib_location",
-        "title": "Where is the ice?",
-        "type": "single_select",
-        "required": true,
-        "options": [
-          { "value": "evap_coil", "label": "Evaporator coil (indoor)" },
-          { "value": "suction_line", "label": "Suction line (large copper line)" },
-          { "value": "outdoor_coil_hp", "label": "Outdoor coil — heat pump in heating mode" },
-          { "value": "outdoor_coil_ac", "label": "Outdoor unit — system in cooling mode" },
-          { "value": "liquid_line", "label": "Liquid line (small copper line)" },
-          { "value": "entire_outdoor_unit", "label": "Entire outdoor unit is a block of ice" }
-        ]
-      },
-      {
-        "step_id": "ib_conditions",
-        "title": "Select all that apply:",
-        "type": "multi_select",
-        "required": true,
-        "min_selections": 1,
-        "options": [
-          { "value": "filter_dirty", "label": "Air filter is dirty" },
-          { "value": "low_airflow", "label": "Airflow seems restricted" },
-          { "value": "low_charge_suspect", "label": "Suspect low refrigerant charge" },
-          { "value": "blower_not_running", "label": "Blower not running or running slow" },
-          { "value": "defrost_not_working", "label": "Heat pump defrost cycle isn't initiating" },
-          { "value": "outdoor_temp_low", "label": "Outdoor temp is below 35°F" },
-          { "value": "metering_device_issue", "label": "Suspect TXV or metering device restriction" },
-          { "value": "not_sure", "label": "Not sure — just see ice" }
-        ]
-      }
-    ],
-
-    "odor": [
-      {
-        "step_id": "od_type",
-        "title": "What does it smell like?",
-        "type": "single_select",
-        "required": true,
-        "note": "Smell type maps directly to urgency level and likely source.",
-        "options": [
-          { "value": "burning_electrical", "label": "Burning / electrical", "subtitle": "Could be overheating motor or wiring — investigate immediately" },
-          { "value": "rotten_egg", "label": "Rotten egg / sulfur", "subtitle": "GAS LEAK — evacuate and call utility if confirmed" },
-          { "value": "musty_mold", "label": "Musty / moldy", "subtitle": "Biological growth in coil, drain pan, or ductwork" },
-          { "value": "dirty_sock", "label": "Dirty sock syndrome", "subtitle": "Biofilm on evaporator coil — common in heat pumps" },
-          { "value": "chemical_sweet", "label": "Chemical or sweet smell", "subtitle": "Possible refrigerant leak" },
-          { "value": "exhaust_fumes", "label": "Exhaust or combustion fumes", "subtitle": "Possible cracked heat exchanger — SHUT DOWN" },
-          { "value": "oil_burning", "label": "Oil burning smell", "subtitle": "Oil furnace — nozzle, filter, or combustion issue" }
-        ]
-      },
-      {
-        "step_id": "od_source",
-        "title": "Where is the smell strongest?",
-        "type": "single_select",
-        "required": true,
-        "options": [
-          { "value": "supply_vents", "label": "Coming from supply vents" },
-          { "value": "return_vent", "label": "Coming from return vent" },
-          { "value": "equipment_room", "label": "Near the furnace / air handler" },
-          { "value": "outdoor_unit", "label": "Near the outdoor unit" },
-          { "value": "throughout_house", "label": "Throughout the entire house" }
-        ]
-      }
-    ],
-
-    "high_bills": [
-      {
-        "step_id": "hb_performance",
-        "title": "How is the system performing?",
-        "type": "single_select",
-        "required": true,
-        "options": [
-          { "value": "runs_nonstop", "label": "Runs almost constantly" },
-          { "value": "reaches_setpoint_slow", "label": "Reaches setpoint but takes much longer than usual" },
-          { "value": "never_reaches", "label": "Never reaches setpoint" },
-          { "value": "cycles_normally_high_bill", "label": "Seems to cycle normally, just high bill" },
-          { "value": "short_cycling", "label": "Short cycling — on/off repeatedly" }
-        ]
-      },
-      {
-        "step_id": "hb_checks",
-        "title": "Select all that apply:",
-        "type": "multi_select",
-        "required": true,
-        "min_selections": 1,
-        "options": [
-          { "value": "dirty_filter", "label": "Filter is dirty" },
-          { "value": "dirty_coils", "label": "Evaporator or condenser coils are dirty" },
-          { "value": "duct_leaks", "label": "Ductwork has visible leaks or disconnects" },
-          { "value": "ducts_unconditioned", "label": "Ductwork runs through unconditioned space" },
-          { "value": "poor_insulation", "label": "Building insulation is poor" },
-          { "value": "aux_heat_running", "label": "Heat pump aux/emergency heat running when it shouldn't be" },
-          { "value": "refrigerant_low_suspect", "label": "Suspect low refrigerant — system working harder" },
-          { "value": "old_equipment", "label": "Equipment is old and likely lost efficiency" },
-          { "value": "no_maintenance", "label": "No maintenance in over a year" },
-          { "value": "not_sure", "label": "Not sure what's causing it" }
         ]
       }
     ]
@@ -546,8 +361,7 @@
         "required": true,
         "options": [
           { "value": "today", "label": "Today / just now" },
-          { "value": "past_few_days", "label": "Past few days" },
-          { "value": "past_week", "label": "Past week" },
+          { "value": "past_week", "label": "Past few days to a week" },
           { "value": "gradual_weeks", "label": "Gradual over weeks" },
           { "value": "since_service", "label": "Since last service / install" },
           { "value": "seasonal", "label": "Seasonal — happens when it gets hot/cold" },
@@ -579,13 +393,10 @@
       },
       "likely_causes": {
         "description": "Ranked by probability based on symptom combination. Most likely first.",
-        "max_items": 5,
+        "max_items": 2,
         "example": [
           "Dirty flame sensor — most common cause of ignition lockout",
-          "Cracked or failed flame sensor",
-          "Weak ground connection between flame sensor and control board",
-          "Gas pressure out of spec — too low to sustain flame",
-          "Failing control board — not reading valid flame signal"
+          "Cracked or failed flame sensor"
         ]
       },
       "based_on_your_answers": {

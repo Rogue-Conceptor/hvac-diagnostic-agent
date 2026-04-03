@@ -19,10 +19,10 @@ interface DiagnosticResult {
 // ── Severity config ───────────────────────────────────────────────────────────
 
 const SEVERITY = {
-  critical: { label: "CRITICAL", bg: "#3b0f0f", border: "#ef4444", text: "#ef4444" },
-  high:     { label: "HIGH",     bg: "#2d1a0a", border: "#f97316", text: "#f97316" },
-  medium:   { label: "MEDIUM",   bg: "#2d2508", border: "#eab308", text: "#eab308" },
-  low:      { label: "LOW",      bg: "#0d2318", border: "#22c55e", text: "#22c55e" },
+  critical: { label: "CRITICAL", border: "#ef4444", text: "#ef4444", desc: "Safety hazard. Address immediately." },
+  high:     { label: "HIGH",     border: "#f97316", text: "#f97316", desc: "System is down. Needs repair now." },
+  medium:   { label: "MEDIUM",   border: "#eab308", text: "#eab308", desc: "Performance degraded. Should be addressed." },
+  low:      { label: "LOW",      border: "#22c55e", text: "#22c55e", desc: "Minor issue. Schedule when convenient." },
 };
 
 const CONFIDENCE = {
@@ -50,7 +50,6 @@ export default function ResultsPage() {
     }
   }, []);
 
-  // ── No result state ──
   if (missing) {
     return (
       <div
@@ -71,7 +70,6 @@ export default function ResultsPage() {
     );
   }
 
-  // ── Loading state (before sessionStorage read) ──
   if (!result) {
     return (
       <div
@@ -84,111 +82,36 @@ export default function ResultsPage() {
   const sev = SEVERITY[result.severity] ?? SEVERITY.medium;
   const conf = CONFIDENCE[result.confidence] ?? CONFIDENCE.medium;
 
+  const card = (extra?: React.CSSProperties): React.CSSProperties => ({
+    borderRadius: 16,
+    padding: 20,
+    border: "1px solid",
+    marginBottom: 16,
+    ...extra,
+  });
+
   return (
     <div
-      className="min-h-screen px-4 py-6 max-w-lg mx-auto"
-      style={{ backgroundColor: "#0f1724", color: "#e8e6df" }}
+      className="min-h-screen max-w-lg mx-auto"
+      style={{ backgroundColor: "#0f1724", color: "#e8e6df", padding: "24px 16px" }}
     >
-      {/* ── App label ── */}
-      <p className="text-xs font-semibold tracking-widest uppercase mb-5" style={{ color: "#8b9bb4" }}>
+      {/* ── Title row ── */}
+      <p
+        className="text-xs font-semibold tracking-widest uppercase"
+        style={{ color: "#8b9bb4", marginBottom: 16 }}
+      >
         HVAC Diagnostic Agent
       </p>
 
-      {/* ── Headline card ── */}
+      {/* ── Diagnostic Confidence ── */}
       <div
-        className="rounded-2xl p-5 mb-4 border"
-        style={{ backgroundColor: sev.bg, borderColor: sev.border }}
-      >
-        <div className="flex items-center gap-2 mb-3">
-          <span
-            className="text-xs font-bold tracking-widest px-2.5 py-1 rounded-full border"
-            style={{ color: sev.text, borderColor: sev.border, backgroundColor: "#00000030" }}
-          >
-            {sev.label}
-          </span>
-        </div>
-        <h1 className="text-lg font-bold leading-snug mb-1" style={{ color: "#e8e6df" }}>
-          {result.headline}
-        </h1>
-        <p className="text-xs" style={{ color: "#8b9bb4" }}>
-          {result.system_area}
-        </p>
-      </div>
-
-      {/* ── Safety flags ── */}
-      {result.safety_flags.length > 0 && (
-        <div
-          className="rounded-2xl p-4 mb-4 border"
-          style={{ backgroundColor: "#2d0a0a", borderColor: "#ef4444" }}
-        >
-          <p className="text-xs font-bold tracking-widest uppercase mb-2" style={{ color: "#ef4444" }}>
-            ⚠ Safety Warning
-          </p>
-          <ul className="flex flex-col gap-1.5">
-            {result.safety_flags.map((flag, i) => (
-              <li key={i} className="text-sm leading-snug" style={{ color: "#fca5a5" }}>
-                {flag}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-
-      {/* ── What was detected ── */}
-      <div
-        className="rounded-2xl p-5 mb-4 border"
-        style={{ backgroundColor: "#1a2332", borderColor: "#243044" }}
-      >
-        <p className="text-xs font-semibold tracking-widest uppercase mb-2" style={{ color: "#5d9cf5" }}>
-          What Was Detected
-        </p>
-        <p className="text-sm leading-relaxed" style={{ color: "#c8c4bb" }}>
-          {result.what_was_detected}
-        </p>
-      </div>
-
-      {/* ── Likely causes ── */}
-      <div
-        className="rounded-2xl p-5 mb-4 border"
-        style={{ backgroundColor: "#1a2332", borderColor: "#243044" }}
-      >
-        <p className="text-xs font-semibold tracking-widest uppercase mb-3" style={{ color: "#5d9cf5" }}>
-          Likely Causes
-        </p>
-        <ol className="flex flex-col gap-2.5">
-          {result.likely_causes.map((cause, i) => (
-            <li key={i} className="flex items-start gap-3">
-              <span
-                className="flex-shrink-0 w-5 h-5 rounded-full flex items-center justify-center text-xs font-bold mt-0.5"
-                style={{ backgroundColor: "#243044", color: "#5d9cf5" }}
-              >
-                {i + 1}
-              </span>
-              <span className="text-sm leading-snug" style={{ color: "#c8c4bb" }}>
-                {cause}
-              </span>
-            </li>
-          ))}
-        </ol>
-      </div>
-
-      {/* ── Based on your answers ── */}
-      <div
-        className="rounded-2xl p-5 mb-4 border"
-        style={{ backgroundColor: "#1a2332", borderColor: "#243044" }}
-      >
-        <p className="text-xs font-semibold tracking-widest uppercase mb-2" style={{ color: "#5d9cf5" }}>
-          Based On Your Answers
-        </p>
-        <p className="text-xs leading-relaxed" style={{ color: "#8b9bb4" }}>
-          {result.based_on_your_answers}
-        </p>
-      </div>
-
-      {/* ── Confidence ── */}
-      <div
-        className="rounded-2xl px-5 py-4 mb-8 border flex items-center justify-between"
-        style={{ backgroundColor: "#1a2332", borderColor: "#243044" }}
+        style={card({
+          backgroundColor: "#1a2332",
+          borderColor: "#243044",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        })}
       >
         <p className="text-xs font-semibold tracking-widest uppercase" style={{ color: "#8b9bb4" }}>
           Diagnostic Confidence
@@ -201,8 +124,10 @@ export default function ResultsPage() {
             {[1, 2, 3].map((d) => (
               <div
                 key={d}
-                className="w-2 h-2 rounded-full"
                 style={{
+                  width: 8,
+                  height: 8,
+                  borderRadius: "50%",
                   backgroundColor: d <= conf.dots ? conf.color : "#243044",
                 }}
               />
@@ -211,16 +136,110 @@ export default function ResultsPage() {
         </div>
       </div>
 
-      {/* ── New diagnostic button ── */}
+      {/* ── Potential Failure Points ── */}
+      <div style={card({ backgroundColor: "#1a2332", borderColor: "#243044" })}>
+        <p style={{ color: "#5d9cf5", fontSize: 20, fontWeight: 700, marginBottom: 12 }}>
+          Potential Failure Points
+        </p>
+        <ol className="flex flex-col gap-2.5">
+          {result.likely_causes.slice(0, 2).map((cause, i) => (
+            <li key={i} className="flex items-start gap-3">
+              <span
+                className="flex-shrink-0 flex items-center justify-center font-bold"
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: "50%",
+                  backgroundColor: "#243044",
+                  color: "#5d9cf5",
+                  fontSize: 12,
+                  flexShrink: 0,
+                  marginTop: 2,
+                }}
+              >
+                {i + 1}
+              </span>
+              <span style={{ color: "#c8c4bb", fontSize: 16, lineHeight: 1.4 }}>
+                {cause}
+              </span>
+            </li>
+          ))}
+        </ol>
+      </div>
+
+      {/* ── Summary card: headline + what_was_detected + based_on_your_answers + assessment ── */}
+      <div style={card({ backgroundColor: "#1a2332", borderColor: "#243044" })}>
+        <p style={{ color: "#5d9cf5", fontSize: 20, fontWeight: 700, marginBottom: 12 }}>
+          Summary
+        </p>
+        <h1 className="text-lg font-bold leading-snug" style={{ color: "#e8e6df", marginBottom: 8 }}>
+          {result.headline}
+        </h1>
+        <p className="text-sm leading-relaxed" style={{ color: "#c8c4bb", marginBottom: 12 }}>
+          {result.what_was_detected}
+        </p>
+        <p className="text-xs" style={{ color: "#8b9bb4", marginBottom: 16 }}>
+          {result.system_area}
+        </p>
+
+        <div style={{ height: 1, backgroundColor: "#243044", marginBottom: 16 }} />
+        <p
+          className="text-xs font-semibold tracking-widest uppercase"
+          style={{ color: "#5d9cf5", marginBottom: 8 }}
+        >
+          Based On Your Answers
+        </p>
+        <p className="text-xs leading-relaxed" style={{ color: "#8b9bb4" }}>
+          {result.based_on_your_answers}
+        </p>
+
+        <div style={{ height: 1, backgroundColor: "#243044", marginTop: 16, marginBottom: 16 }} />
+        <div className="flex items-center gap-3" style={{ marginBottom: result.safety_flags.length > 0 ? 8 : 0, flexWrap: "wrap", justifyContent: "center" }}>
+          <span
+            style={{
+              display: "inline-block",
+              color: sev.text,
+              fontSize: 18,
+              fontWeight: 600,
+              letterSpacing: "0.1em",
+              border: `2px solid ${sev.border}`,
+              borderRadius: 6,
+              padding: "4px 12px",
+              flexShrink: 0,
+            }}
+          >
+            {sev.label}
+          </span>
+          <span style={{ color: sev.text, fontSize: 16, lineHeight: 1.4 }}>
+            {sev.desc}
+          </span>
+        </div>
+        {result.safety_flags.length > 0 && (
+          <ul className="flex flex-col gap-1">
+            {result.safety_flags.map((flag, i) => (
+              <li key={i} className="text-xs font-medium leading-snug" style={{ color: "#fca5a5" }}>
+                ⚠ {flag}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      {/* ── Start new diagnostic ── */}
       <Link
         href="/diagnostic"
-        className="block w-full py-4 rounded-xl font-semibold text-sm text-center transition-opacity hover:opacity-90 active:opacity-80"
-        style={{ backgroundColor: "#5d9cf5", color: "#fff" }}
+        className="block w-full font-semibold text-sm text-center transition-opacity hover:opacity-90 active:opacity-80"
+        style={{
+          backgroundColor: "#5d9cf5",
+          color: "#fff",
+          borderRadius: 12,
+          padding: "16px 0",
+        }}
       >
         Start New Diagnostic
       </Link>
 
-      <div className="h-8" />
+      <div style={{ height: 32 }} />
     </div>
   );
 }
