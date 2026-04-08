@@ -1,39 +1,24 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
-import { saveDiagnostic } from "@/app/lib/history";
+import { getHistory, type DiagnosticEntry } from "@/app/lib/history";
 import { DiagnosticResultCard, type DiagnosticResult } from "@/app/components/DiagnosticResultCard";
 
-export default function ResultsPage() {
-  const [result, setResult] = useState<DiagnosticResult | null>(null);
+export default function HistoryDetailPage({ params }: { params: { id: string } }) {
+  const { id } = params;
+  const [entry, setEntry] = useState<DiagnosticEntry | null>(null);
   const [missing, setMissing] = useState(false);
-  const [savedId, setSavedId] = useState<number | null>(null);
-  const savedRef = useRef(false);
 
   useEffect(() => {
-    const raw = sessionStorage.getItem("hvac_diagnostic_result");
-    if (!raw) {
+    const numericId = Number(id);
+    const found = getHistory().find((e) => e.id === numericId) ?? null;
+    if (!found) {
       setMissing(true);
-      return;
+    } else {
+      setEntry(found);
     }
-    try {
-      const parsed = JSON.parse(raw);
-      setResult(parsed);
-      if (!savedRef.current) {
-        savedRef.current = true;
-        let answers: unknown = {};
-        try {
-          const rawAnswers = sessionStorage.getItem("hvac_diagnostic_answers");
-          if (rawAnswers) answers = JSON.parse(rawAnswers);
-        } catch { /* ignore */ }
-        const id = saveDiagnostic(parsed, answers);
-        setSavedId(id);
-      }
-    } catch {
-      setMissing(true);
-    }
-  }, []);
+  }, [id]);
 
   if (missing) {
     return (
@@ -42,20 +27,20 @@ export default function ResultsPage() {
         style={{ backgroundColor: "#0f1724", color: "#e8e6df" }}
       >
         <p className="text-base mb-4" style={{ color: "#8b9bb4" }}>
-          No diagnostic result found.
+          Diagnostic not found.
         </p>
         <Link
-          href="/diagnostic"
+          href="/history"
           className="px-6 py-3 rounded-xl font-semibold text-sm"
           style={{ backgroundColor: "#5d9cf5", color: "#fff" }}
         >
-          Start Diagnostic
+          Back to History
         </Link>
       </div>
     );
   }
 
-  if (!result) {
+  if (!entry) {
     return (
       <div
         className="flex min-h-screen items-center justify-center"
@@ -64,11 +49,28 @@ export default function ResultsPage() {
     );
   }
 
+  const result = entry.result as DiagnosticResult;
+
   return (
     <div
       className="min-h-screen max-w-lg mx-auto"
       style={{ backgroundColor: "#0f1724", color: "#e8e6df", padding: "24px 16px" }}
     >
+      {/* ── Back link ── */}
+      <div className="flex items-center gap-3" style={{ marginBottom: 16 }}>
+        <Link
+          href="/history"
+          className="flex items-center"
+          style={{ color: "#8b9bb4" }}
+          aria-label="Back to history"
+        >
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <span className="text-sm font-medium" style={{ marginLeft: 4 }}>Back</span>
+        </Link>
+      </div>
+
       <p
         className="text-xs font-semibold tracking-widest uppercase"
         style={{ color: "#8b9bb4", marginBottom: 16 }}
@@ -78,7 +80,34 @@ export default function ResultsPage() {
 
       <DiagnosticResultCard result={result} />
 
-      <div className="flex flex-col" style={{ gap: 12 }}>
+      {/* ── Actions ── */}
+      <div className="flex flex-col gap-3">
+        <Link
+          href={`/report/${entry.id}`}
+          className="block w-full font-semibold text-sm text-center transition-opacity hover:opacity-90 active:opacity-80"
+          style={{
+            border: "1.5px solid #5d9cf5",
+            color: "#5d9cf5",
+            backgroundColor: "transparent",
+            borderRadius: 12,
+            padding: "16px 0",
+          }}
+        >
+          Share Report
+        </Link>
+        <Link
+          href="/history"
+          className="block w-full font-semibold text-sm text-center transition-opacity hover:opacity-90 active:opacity-80"
+          style={{
+            border: "1.5px solid #5d9cf5",
+            color: "#5d9cf5",
+            backgroundColor: "transparent",
+            borderRadius: 12,
+            padding: "16px 0",
+          }}
+        >
+          Back to History
+        </Link>
         <Link
           href="/diagnostic"
           className="block w-full font-semibold text-sm text-center transition-opacity hover:opacity-90 active:opacity-80"
@@ -90,34 +119,6 @@ export default function ResultsPage() {
           }}
         >
           Start New Diagnostic
-        </Link>
-        {savedId !== null && (
-          <Link
-            href={`/report/${savedId}`}
-            className="block w-full font-semibold text-sm text-center transition-opacity hover:opacity-90 active:opacity-80"
-            style={{
-              border: "1.5px solid #5d9cf5",
-              color: "#5d9cf5",
-              backgroundColor: "transparent",
-              borderRadius: 12,
-              padding: "16px 0",
-            }}
-          >
-            Share Report
-          </Link>
-        )}
-        <Link
-          href="/"
-          className="block w-full font-semibold text-sm text-center transition-opacity hover:opacity-90 active:opacity-80"
-          style={{
-            border: "1.5px solid #5d9cf5",
-            color: "#5d9cf5",
-            backgroundColor: "transparent",
-            borderRadius: 12,
-            padding: "16px 0",
-          }}
-        >
-          Back to Home
         </Link>
       </div>
 

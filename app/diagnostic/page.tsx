@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import intakeConfig from "@/app/data/intake-config.json";
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -118,6 +119,7 @@ export default function DiagnosticPage() {
           throw new Error(data.error ?? "Unexpected error from server.");
         }
         sessionStorage.setItem("hvac_diagnostic_result", JSON.stringify(data));
+        sessionStorage.setItem("hvac_diagnostic_answers", JSON.stringify(answers));
         router.push("/diagnostic/results");
       } catch (err) {
         setLoading(false);
@@ -169,20 +171,33 @@ export default function DiagnosticPage() {
     >
       {/* ── Header ── */}
       <header className="flex items-center justify-between px-4 pt-5 pb-2">
-        <button
-          onClick={handleBack}
-          disabled={stepIndex === 0}
-          className="text-sm font-medium px-3 py-2 rounded-lg transition-opacity disabled:opacity-20"
-          style={{ color: "#8b9bb4" }}
-        >
-          ← Back
-        </button>
+        {stepIndex === 0 ? (
+          <div className="w-16" />
+        ) : (
+          <button
+            onClick={handleBack}
+            className="text-sm font-medium px-3 py-2 rounded-lg transition-opacity"
+            style={{ color: "#8b9bb4" }}
+          >
+            ← Back
+          </button>
+        )}
 
         <span className="text-xs font-medium" style={{ color: "#8b9bb4" }}>
           {stepIndex + 1} / {totalSteps}
         </span>
 
-        <div className="w-16" />
+        <button
+          onClick={() => {
+            sessionStorage.removeItem("hvac_diagnostic_result");
+            sessionStorage.removeItem("hvac_diagnostic_answers");
+            router.push("/");
+          }}
+          className="text-sm font-medium px-3 py-2 rounded-lg transition-opacity"
+          style={{ color: "#5d9cf5", background: "none" }}
+        >
+          Exit
+        </button>
       </header>
 
       {/* ── Progress dots ── */}

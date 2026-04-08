@@ -10,13 +10,22 @@ export default function Home() {
         <p className="text-base mb-8" style={{ color: "#8b9bb4" }}>
           Field diagnostic tool for HVAC technicians
         </p>
-        <Link
-          href="/diagnostic"
-          className="inline-block w-full sm:w-auto px-8 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90 active:opacity-80"
-          style={{ backgroundColor: "#5d9cf5" }}
-        >
-          Start Diagnostic
-        </Link>
+        <div className="flex flex-col items-center" style={{ gap: 16 }}>
+          <Link
+            href="/diagnostic"
+            className="inline-block w-full sm:w-auto px-8 py-3 rounded-lg font-semibold text-white transition-opacity hover:opacity-90 active:opacity-80"
+            style={{ backgroundColor: "#5d9cf5" }}
+          >
+            Start Diagnostic
+          </Link>
+          <Link
+            href="/history"
+            className="inline-block w-full sm:w-auto px-8 py-3 rounded-lg font-semibold transition-opacity hover:opacity-90 active:opacity-80"
+            style={{ border: "1.5px solid #5d9cf5", color: "#5d9cf5", backgroundColor: "transparent" }}
+          >
+            View History
+          </Link>
+        </div>
       </div>
     </main>
   );
